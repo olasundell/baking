@@ -1,0 +1,6 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+	compile project(":common")
+	runtime group: 'com.h2database', name: 'h2'
+}

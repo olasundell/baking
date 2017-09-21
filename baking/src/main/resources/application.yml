@@ -1,0 +1,12 @@
+server:
+  port: 8460
+
+spring:
+  application:
+    name: baking
+
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://localhost:8490/eureka/"
+

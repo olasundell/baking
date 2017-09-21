@@ -1,0 +1,6 @@
+include 'baking'
+include 'common'
+include 'ingredients'
+include 'recipes'
+include 'eureka-registry'
+include 'zookeeper'

@@ -1,0 +1,18 @@
+server:
+  port: 8450
+
+spring:
+  application:
+    name: recipes
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database: h2
+  datasource:
+    driver-class-name: org.h2.Driver
+
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://localhost:8490/eureka/"
+
