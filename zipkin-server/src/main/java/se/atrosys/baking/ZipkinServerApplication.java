@@ -1,4 +1,4 @@
-package se.atrosys.baking.discovery;
+package se.atrosys.baking;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -6,15 +6,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
-import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import zipkin.server.EnableZipkinServer;
 
 /**
  * TODO write documentation
  */
-@EnableEurekaServer
 @SpringBootApplication
-public class EurekaRegistry {
+@EnableZipkinServer
+@EnableDiscoveryClient
+@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
+public class ZipkinServerApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(EurekaRegistry.class, args);
+		SpringApplication.run(ZipkinServerApplication.class, args);
 	}
 }

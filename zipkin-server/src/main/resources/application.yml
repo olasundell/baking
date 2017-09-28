@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: zipkin
+  zipkin:
+    service:
+      name: zipkin
+    baseUrl: http://localhost:8499
+
+
+server:
+  port: 8499
+
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://localhost:8490/eureka/"
+
+zipkin:
+  store:
+    type: mem
+
+logging:
+  level:
+    com.netflix.discovery: 'OFF'

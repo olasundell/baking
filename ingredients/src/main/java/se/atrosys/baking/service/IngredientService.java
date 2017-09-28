@@ -10,6 +10,7 @@ import se.atrosys.baking.model.StoredIngredient;
 import se.atrosys.baking.model.IngredientsUpdateResult;
 import se.atrosys.baking.repository.IngredientRepository;
 
+import javax.persistence.RollbackException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
@@ -36,8 +37,10 @@ public class IngredientService {
 
 			List<String> errors = new ArrayList<>();
 
-			if (e.getOriginalException() instanceof ConstraintViolationException) {
-				ConstraintViolationException ex = (ConstraintViolationException)e.getOriginalException();
+			if (e.getOriginalException() instanceof RollbackException &&
+				e.getOriginalException().getCause() instanceof ConstraintViolationException) {
+
+				ConstraintViolationException ex = (ConstraintViolationException)e.getOriginalException().getCause();
 				errors = ex.getConstraintViolations()
 						.stream()
 						.map(ConstraintViolation::toString)
@@ -45,7 +48,7 @@ public class IngredientService {
 				logger.warn("Error in transaction, constraints are violated. Might be someone asking for more than in store.");
 			} else {
 				// TODO scream and shout
-				logger.error("Error in transaction, something truly unexpected happened", e);
+				logger.error("Error in transaction, something truly unexpected happened: {}", e.getOriginalException().getClass().getName(), e);
 			}
 
 			return IngredientsUpdateResult.builder()

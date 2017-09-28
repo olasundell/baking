@@ -9,3 +9,14 @@ eureka:
     fetchRegistry: false
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+spring:
+  zipkin:
+#    base-url: http://localhost:8499
+    service:
+      name: eureka-registry
+
+
+logging:
+  level:
+    com.netflix.discovery: 'OFF'
