@@ -21,7 +21,6 @@ spring:
 logging:
   level:
     com.netflix.discovery: 'OFF'
-    org.springframework.web.servlet.DispatcherServlet: 'DEBUG'
 
 eureka:
   client:
