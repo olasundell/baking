@@ -8,7 +8,7 @@ spring:
     sampler:
       percentage: 1
   zipkin:
-    baseUrl: http://localhost:8499
+    baseUrl: http://localhost:9411
     service:
       name: baking
 
@@ -16,6 +16,7 @@ eureka:
   client:
     service-url:
       defaultZone: "http://localhost:8490/eureka/"
+    eureka-service-url-poll-interval-seconds: 10
 
 logging:
   level:

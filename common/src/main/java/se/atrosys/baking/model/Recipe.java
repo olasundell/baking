@@ -22,7 +22,6 @@ import java.util.Map;
 @Data
 @Builder
 @Entity
-//@RequiredArgsConstructor(onConstructor = @__(@PersistenceConstructor))
 @NoArgsConstructor
 @AllArgsConstructor
 public class Recipe {

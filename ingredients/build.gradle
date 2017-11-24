@@ -3,6 +3,5 @@ apply plugin: 'org.springframework.boot'
 dependencies {
 	compile project(":common")
 	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-eureka'
-//	compile ("org.springframework.boot:spring-boot-starter-data-rest")
 	runtime group: 'com.h2database', name: 'h2'
 }

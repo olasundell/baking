@@ -14,7 +14,7 @@ spring:
     sampler:
       percentage: 1
   zipkin:
-    base-url: http://localhost:8499
+    base-url: http://localhost:9411
     service:
       name: 'ingredients'
 
@@ -26,4 +26,5 @@ eureka:
   client:
     service-url:
       defaultZone: "http://localhost:8490/eureka/"
+
 

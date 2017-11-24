@@ -1,0 +1,70 @@
+version: '3'
+
+services:
+  zipkin-server:
+    image: zipkin-server
+    ports:
+      - "8499:8499"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8499/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 6
+  eureka-registry:
+    image: eureka-registry
+    ports:
+      - "8490:8490"
+    depends_on:
+      - zipkin-server
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8490/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 6
+  zuul:
+    image: zuul
+    ports:
+      - "8500:8500"
+    depends_on:
+      - eureka-registry
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8500/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 6
+  ingredients:
+    image: ingredients
+    ports:
+      - "8440:8440"
+    depends_on:
+      - eureka-registry
+      - zuul
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8440/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 6
+  recipes:
+    image: recipes
+    ports:
+      - "8450:8450"
+    depends_on:
+      - eureka-registry
+      - zuul
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8450/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 6
+  baking:
+    image: baking
+    ports:
+      - "8460:8460"
+    depends_on:
+      - recipes
+      - ingredients
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8460/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 6
