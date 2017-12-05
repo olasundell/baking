@@ -5,25 +5,28 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Embedded;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.io.Serializable;
 
 /**
  * TODO write documentation
  */
-@Data
 @Builder
-@Entity
-@AllArgsConstructor
+@Data
+//@Entity
+@Embeddable
 @NoArgsConstructor
-public class Ingredient implements Serializable {
-	@Id
-	protected String name;
+@AllArgsConstructor
+public class IngredientTypeAmount {
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	private Integer id;
 	@Enumerated(value = EnumType.STRING)
-	protected UnitType type;
-
+	private UnitType type;
+	private Double amount;
 }

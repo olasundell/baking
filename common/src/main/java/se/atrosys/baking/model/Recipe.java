@@ -1,5 +1,7 @@
 package se.atrosys.baking.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +26,7 @@ import java.util.Map;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonDeserialize(builder =  Recipe.RecipeBuilder.class)
 public class Recipe {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +35,9 @@ public class Recipe {
 	@ElementCollection
 	@JoinTable(name = "INGREDIENT_AMOUNT", joinColumns = @JoinColumn(name = "id"))
 	@MapKeyColumn(name = "name")
-	private Map<String, Integer> ingredients;
+	private Map<String, IngredientTypeAmount> ingredients;
 	private String name;
+
+	@JsonPOJOBuilder(withPrefix = "")
+	public static class RecipeBuilder {}
 }

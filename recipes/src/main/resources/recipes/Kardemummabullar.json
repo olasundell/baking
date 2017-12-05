@@ -1,0 +1,41 @@
+{
+	"name": "Kardemummabullar",
+	"ingredients": {
+		"yeast": {
+			"type": "GRAMMES",
+			"amount": 50
+		},
+		"butter": {
+			"type": "GRAMMES", "amount": 50
+		},
+		"milk": {
+			"type": "DECILITRES",
+			"amount": 2.5
+		},
+		"water": {
+			"type": "DECILITRES",
+			"amount": 2.5
+		},
+
+		"egg": {
+			"type": "PIECES",
+			"amount": 2
+		},
+		"sugar": {
+			"type": "DECILITRES",
+			"amount": 2.5
+		},
+		"flour": {
+			"type": "DECILITRES",
+			"amount": 13
+		},
+		"cardamom": {
+			"type": "TABLESPOONS",
+			"amount": 1
+		},
+		"salt": {
+			"type": "TEASPOONS",
+			"amount": 0.5
+		}
+	}
+}
