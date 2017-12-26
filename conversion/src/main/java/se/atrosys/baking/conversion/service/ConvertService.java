@@ -1,5 +1,7 @@
 package se.atrosys.baking.conversion.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import se.atrosys.baking.conversion.model.Ratio;
 import se.atrosys.baking.conversion.repository.IngredientConversionRepository;
@@ -17,6 +19,7 @@ import java.util.Map;
  */
 @Component
 public class ConvertService {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final UnitRepository repo;
 	private final IngredientConversionRepository ingredientRepo;
 
@@ -42,12 +45,14 @@ public class ConvertService {
 	private double calcRatio(Ingredient ingredient, Unit subUnit) {
 		double ratio;
 
-		if (ingredient.equals(subUnit)) {
+		final Unit ingredientUnit = ingredient.getUnit();
+
+		if (ingredientUnit.equals(subUnit)) {
 			ratio = 1;
-		} else if (ingredient.getUnit().equals(subUnit.getType())) {
-			return convert(ingredient, subUnit);
+		} else if (ingredientUnit.getType().equals(subUnit.getType())) {
+			return convert(ingredientUnit, subUnit);
 		} else {
-			// find conversion from table
+			throw new IllegalStateException("Converting by ingredient is not implemented yet");
 		}
 
 		return ratio;
@@ -55,7 +60,11 @@ public class ConvertService {
 
 	private double convert(Unit origUnit, Unit subUnit) {
 		final Ratio firstByFromAndTo = repo.findFirstByFromAndTo(subUnit, origUnit);
-		return firstByFromAndTo.getRatio();
+		if (firstByFromAndTo != null) {
+			return firstByFromAndTo.getRatio();
+		}
+
+		throw new IllegalStateException("Converting from " + subUnit + " to " + origUnit + " is not possible at the moment");
 //		switch (subUnit) {
 //			case PIECES:
 //			case GRAMMES:

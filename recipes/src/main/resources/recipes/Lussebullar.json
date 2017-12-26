@@ -2,31 +2,31 @@
 	"name": "Lussebullar",
 	"ingredients": {
 		"yeast": {
-			"type": "GRAMMES",
+			"unit": "GRAMMES",
 			"amount": 175
 		},
 		"saffron": {
-			"type": "GRAMMES",
+			"unit": "GRAMMES",
 			"amount": 1
 		},
 		"butter": {
-			"type": "GRAMMES",
+			"unit": "GRAMMES",
 			"amount": 175
 		},
 		"sugar": {
-			"type": "DECILITRES",
+			"unit": "DECILITRES",
 			"amount": 2
 		},
 		"milk": {
-			"type": "DECILITRES",
+			"unit": "DECILITRES",
 			"amount": 5
 		},
 		"salt": {
-			"type": "TEASPOONS",
+			"unit": "TEASPOONS",
 			"amount": 0.5
 		},
 		"flour": {
-			"type": "GRAMMES",
+			"unit": "GRAMMES",
 			"amount": 900
 		}
 	}

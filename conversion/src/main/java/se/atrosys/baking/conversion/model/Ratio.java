@@ -1,14 +1,10 @@
 package se.atrosys.baking.conversion.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.experimental.NonFinal;
-import se.atrosys.baking.conversion.service.ConvertService;
 import se.atrosys.baking.model.Unit;
 
-import javax.persistence.Embeddable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,15 +17,16 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(uniqueConstraints = {
-	@UniqueConstraint(columnNames = {"from", "to"})
+	@UniqueConstraint(columnNames = {"from_unit", "to_unit"})
 })
 @Value(staticConstructor = "of")
-@Embeddable
 public class Ratio {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@NonFinal Integer id;
+	@Column(name = "from_unit")
 	Unit from;
+	@Column(name = "to_unit")
 	Unit to;
 	Double ratio;
 

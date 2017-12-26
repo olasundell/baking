@@ -2,19 +2,19 @@
 	"name": "Sockerkaka",
 	"ingredients": {
 		"baking soda": {
-			"type": "GRAMMES",
+			"unit": "GRAMMES",
 			"amount": 50
 		},
 		"sugar": {
-			"type": "GRAMMES",
+			"unit": "GRAMMES",
 			"amount": 500
 		},
 		"egg": {
-			"type": "PIECES",
+			"unit": "PIECES",
 			"amount": 4
 		},
 		"flour": {
-			"type": "GRAMMES",
+			"unit": "GRAMMES",
 			"amount": 1000
 		}
 	}

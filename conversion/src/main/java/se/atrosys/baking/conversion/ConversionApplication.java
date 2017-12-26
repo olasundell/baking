@@ -10,7 +10,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-@EntityScan("se.atrosys.baking.model")
+@EntityScan({"se.atrosys.baking.model", "se.atrosys.baking.conversion.model"})
 public class ConversionApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ConversionApplication.class, args);
