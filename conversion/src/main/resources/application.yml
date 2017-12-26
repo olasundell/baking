@@ -1,0 +1,29 @@
+server:
+  port: 8430
+
+spring:
+  application:
+    name: conversion
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database: h2
+  datasource:
+    driver-class-name: org.h2.Driver
+  sleuth:
+    sampler:
+      percentage: 1
+  zipkin:
+    base-url: http://localhost:9411
+    service:
+      name: conversion
+
+logging:
+  level:
+    com.netflix.discovery: 'OFF'
+
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://localhost:8490/eureka/"
+

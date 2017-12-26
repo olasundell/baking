@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -24,6 +23,5 @@ public class Ingredient implements Serializable {
 	@Id
 	protected String name;
 	@Enumerated(value = EnumType.STRING)
-	protected UnitType type;
-
+	protected Unit unit;
 }

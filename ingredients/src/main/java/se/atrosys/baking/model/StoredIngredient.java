@@ -29,11 +29,6 @@ public class StoredIngredient {
 	protected String name;
 	protected Unit unit;
 
-	public enum Unit {
-		GRAMMES,
-		LITERS,
-		PIECES
-	}
 	@OneToOne(mappedBy = "ingredient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonUnwrapped
 	private Amount amount;

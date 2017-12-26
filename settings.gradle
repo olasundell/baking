@@ -1,5 +1,6 @@
 include 'baking'
 include 'common'
+include 'conversion'
 include 'ingredients'
 include 'recipes'
 include 'eureka-registry'

@@ -3,7 +3,6 @@ package se.atrosys.baking.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,9 +28,15 @@ public class Amount {
 	@JsonIgnore
 	private Integer id;
 	@Min(0)
-	private Integer amount;
+	private Long amount;
 	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId
 	@JsonIgnore
 	private StoredIngredient ingredient;
+
+	public static Amount from(IngredientUnitAmount typeAmount) {
+		return Amount.builder()
+			.amount(Math.round(typeAmount.getAmount()))
+			.build();
+	}
 }

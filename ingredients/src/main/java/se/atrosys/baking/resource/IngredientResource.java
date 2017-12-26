@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import se.atrosys.baking.model.IngredientUnitAmount;
 import se.atrosys.baking.model.IngredientsUpdateResult;
 import se.atrosys.baking.model.StoredIngredient;
 import se.atrosys.baking.repository.IngredientRepository;
@@ -45,7 +46,7 @@ public class IngredientResource {
 	}
 
 	@PutMapping("/ingredients")
-	public IngredientsUpdateResult update(@RequestBody Map<String, Integer> ingredientKeysAndAmounts) {
+	public IngredientsUpdateResult update(@RequestBody Map<String, IngredientUnitAmount> ingredientKeysAndAmounts) {
 		final String s = ingredientKeysAndAmounts
 				.entrySet()
 				.stream()

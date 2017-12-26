@@ -13,7 +13,6 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
  * TODO write documentation
  */
 @SpringBootApplication
-@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 @EnableDiscoveryClient
 @EnableFeignClients
 public class BakingApplication {

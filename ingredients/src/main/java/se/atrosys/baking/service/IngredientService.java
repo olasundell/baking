@@ -5,7 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.transaction.annotation.Transactional;
+import se.atrosys.baking.client.ConversionClient;
 import se.atrosys.baking.model.Amount;
+import se.atrosys.baking.model.ConversionRequest;
+import se.atrosys.baking.model.Ingredient;
+import se.atrosys.baking.model.IngredientUnitAmount;
 import se.atrosys.baking.model.StoredIngredient;
 import se.atrosys.baking.model.IngredientsUpdateResult;
 import se.atrosys.baking.repository.IngredientRepository;
@@ -24,13 +28,16 @@ import java.util.stream.Collectors;
 @Component
 public class IngredientService {
 	private final IngredientRepository repository;
+	private final ConversionClient converterClient;
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	public IngredientService(IngredientRepository repository) {
+	public IngredientService(IngredientRepository repository,
+	                         ConversionClient converterClient) {
 		this.repository = repository;
+		this.converterClient = converterClient;
 	}
 
-	public IngredientsUpdateResult save(Map<String, Integer> ingredientNameValue) {
+	public IngredientsUpdateResult save(Map<String, IngredientUnitAmount> ingredientNameValue) {
 		try {
 			saveTransactionally(ingredientNameValue);
 		} catch (TransactionSystemException e) {
@@ -64,15 +71,31 @@ public class IngredientService {
 	}
 
 	@Transactional
-	void saveTransactionally(Map<String, Integer> ingredientNameValue) {
+	void saveTransactionally(Map<String, IngredientUnitAmount> ingredientNameValue) {
 		List<StoredIngredient> ingredients = ingredientNameValue.entrySet()
 				.stream()
 				.map(entry -> {
+					// TODO rewrite this mess, make it more immutable and less...messy.
 					StoredIngredient in = repository.findByName(entry.getKey());
-					final Amount amount = in.getAmount();
-					final Integer oldAmount = amount.getAmount();
-					amount.setAmount(amount.getAmount() - entry.getValue());
-					logger.info("Ingredient {} used to have {} units, now has {}", in.getName(), oldAmount, amount.getAmount());
+					final Amount oldAmount = in.getAmount();
+					final Amount newAmount = Amount.from(converterClient.subtract(
+						ConversionRequest.builder()
+							.ingredient(Ingredient.builder()
+								.name(in.getName())
+								.unit(in.getUnit())
+								.build())
+							.originalAmount(Double.valueOf(oldAmount.getAmount()))
+							.toSubtract(entry.getValue())
+							.build()
+						));
+
+					in.setAmount(newAmount);
+
+					logger.info("Ingredient {} used to have {} units, now has {}",
+						in.getName(),
+						oldAmount.getAmount(),
+						newAmount.getAmount());
+
 					return in;
 				}).collect(Collectors.toList());
 

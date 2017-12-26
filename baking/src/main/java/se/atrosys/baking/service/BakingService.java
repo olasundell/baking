@@ -29,9 +29,12 @@ public class BakingService {
 	}
 
 	public BakingResult bake(String recipe) {
+		logger.info("Baking {}", recipe);
 		Recipe r = recipeClient.getRecipe(recipe);
 
 		if (r == null) {
+			logger.warn("Recipe not found: {}", recipe);
+
 			return BakingResult.builder()
 					.success(false)
 					.recipe(recipe)
@@ -41,6 +44,7 @@ public class BakingService {
 
 		// TODO this should be more user-friendly
 		if (!getIngredients(r)) {
+			logger.warn("Ingredients missing");
 			return BakingResult.builder()
 					.success(false)
 					.recipe(recipe)
@@ -50,6 +54,8 @@ public class BakingService {
 		}
 
 //		subtractIngredients(r);
+
+		logger.info("Great success!");
 
 		return BakingResult.builder()
 				.recipe(recipe)

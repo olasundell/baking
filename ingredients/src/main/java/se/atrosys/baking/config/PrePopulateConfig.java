@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import se.atrosys.baking.model.Amount;
 import se.atrosys.baking.model.StoredIngredient;
-import se.atrosys.baking.model.StoredIngredient.Unit;
+import se.atrosys.baking.model.Unit;
 import se.atrosys.baking.repository.IngredientRepository;
 
 import javax.annotation.PostConstruct;
@@ -33,11 +33,11 @@ public class PrePopulateConfig {
 				ingredient("sugar", 23_000, Unit.GRAMMES),
 				ingredient("baking soda", 500, Unit.GRAMMES),
 				ingredient("egg", 3, Unit.PIECES),
-				ingredient("milk", 21, Unit.LITERS));
+				ingredient("milk", 21, Unit.LITRES));
 	}
 
 	private StoredIngredient ingredient(String name, int amount, Unit unit) {
-		final Amount amount1 = Amount.builder().amount(amount).build();
+		final Amount amount1 = Amount.builder().amount((long) amount).build();
 		final StoredIngredient ingredient = StoredIngredient.builder()
 				.name(name)
 				.amount(amount1)

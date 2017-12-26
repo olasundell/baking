@@ -35,7 +35,7 @@ public class Recipe {
 	@ElementCollection
 	@JoinTable(name = "INGREDIENT_AMOUNT", joinColumns = @JoinColumn(name = "id"))
 	@MapKeyColumn(name = "name")
-	private Map<String, IngredientTypeAmount> ingredients;
+	private Map<String, IngredientUnitAmount> ingredients;
 	private String name;
 
 	@JsonPOJOBuilder(withPrefix = "")

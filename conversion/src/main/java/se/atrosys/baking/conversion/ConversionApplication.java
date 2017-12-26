@@ -1,18 +1,18 @@
-package se.atrosys.baking;
+package se.atrosys.baking.conversion;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
 
 /**
  * TODO write documentation
  */
 @SpringBootApplication
-@EnableFeignClients
 @EnableDiscoveryClient
-public class IngredientApplication {
+@EntityScan("se.atrosys.baking.model")
+public class ConversionApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(IngredientApplication.class, args);
+		SpringApplication.run(ConversionApplication.class, args);
 	}
 }

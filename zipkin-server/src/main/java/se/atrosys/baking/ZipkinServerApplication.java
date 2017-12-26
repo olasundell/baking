@@ -15,7 +15,6 @@ import zipkin.server.EnableZipkinServer;
 @SpringBootApplication
 @EnableZipkinServer
 @EnableDiscoveryClient
-@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class ZipkinServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ZipkinServerApplication.class, args);
