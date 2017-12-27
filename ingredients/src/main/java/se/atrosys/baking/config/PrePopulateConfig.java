@@ -25,7 +25,7 @@ public class PrePopulateConfig {
 
 	@PostConstruct
 	public void populate() {
-		ingredientRepository.save(amounts());
+		ingredientRepository.saveAll(amounts());
 	}
 
 	private List<StoredIngredient> amounts() {

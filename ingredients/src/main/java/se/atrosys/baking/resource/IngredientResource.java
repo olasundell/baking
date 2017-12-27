@@ -15,6 +15,7 @@ import se.atrosys.baking.model.StoredIngredient;
 import se.atrosys.baking.repository.IngredientRepository;
 import se.atrosys.baking.service.IngredientService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -42,7 +43,7 @@ public class IngredientResource {
 
 	@GetMapping("/ingredients/{ingredient}")
 	public StoredIngredient one(@PathVariable("ingredient") String ingredient) {
-		return repository.findByName(ingredient);
+		return repository.findByName(ingredient).orElseThrow(EntityNotFoundException::new);
 	}
 
 	@PutMapping("/ingredients")

@@ -20,6 +20,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -74,31 +75,34 @@ public class IngredientService {
 	void saveTransactionally(Map<String, IngredientUnitAmount> ingredientNameValue) {
 		List<StoredIngredient> ingredients = ingredientNameValue.entrySet()
 				.stream()
-				.map(entry -> {
-					// TODO rewrite this mess, make it more immutable and less...messy.
-					StoredIngredient in = repository.findByName(entry.getKey());
-					final Amount oldAmount = in.getAmount();
-					final Amount newAmount = Amount.from(converterClient.subtract(
-						ConversionRequest.builder()
-							.ingredient(Ingredient.builder()
-								.name(in.getName())
-								.unit(in.getUnit())
-								.build())
-							.originalAmount(Double.valueOf(oldAmount.getAmount()))
-							.toSubtract(entry.getValue())
-							.build()
-						));
+				.map(this::recalculateAmount).collect(Collectors.toList());
 
-					in.setAmount(newAmount);
+		repository.saveAll(ingredients);
+	}
 
-					logger.info("Ingredient {} used to have {} units, now has {}",
-						in.getName(),
-						oldAmount.getAmount(),
-						newAmount.getAmount());
+	private StoredIngredient recalculateAmount(Map.Entry<String, IngredientUnitAmount> entry) {
+		Optional<StoredIngredient> opt = repository.findByName(entry.getKey());
+		StoredIngredient in = opt.orElseThrow(() -> new IllegalArgumentException("No such ingredient: " + entry.getKey()));
+		final Amount amount = in.getAmount();
+		final Long old = amount.getAmount();
+		final IngredientUnitAmount subtract = converterClient.subtract(
+			ConversionRequest.builder()
+				.ingredient(Ingredient.builder()
+					.name(in.getName())
+					.unit(in.getUnit())
+					.build())
+				.originalAmount(Double.valueOf(old))
+				.toSubtract(entry.getValue())
+				.build()
+		);
 
-					return in;
-				}).collect(Collectors.toList());
+		amount.setAmount(Math.round(subtract.getAmount()));
 
-		repository.save(ingredients);
+		logger.info("Ingredient {} used to have {} units, now has {}",
+			in.getName(),
+			old,
+			amount.getAmount());
+
+		return in;
 	}
 }
