@@ -28,8 +28,11 @@ public class StoredIngredient {
 	protected Integer id;
 	protected String name;
 	protected Unit unit;
+	protected Long amount;
 
-	@OneToOne(mappedBy = "ingredient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonUnwrapped
-	private Amount amount;
+//	@OneToOne(mappedBy = "ingredient", fetch = FetchType.LAZY, cascade = { CascadeType.ALL, CascadeType.MERGE})
+//	@OneToOne(mappedBy = "ingredient", fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+//	@OneToOne(mappedBy = "ingredient", fetch = FetchType.LAZY)
+//	@JsonUnwrapped
+//	private Amount amount;
 }

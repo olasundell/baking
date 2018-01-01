@@ -18,6 +18,7 @@ import javax.persistence.RollbackException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -83,8 +84,9 @@ public class IngredientService {
 	private StoredIngredient recalculateAmount(Map.Entry<String, IngredientUnitAmount> entry) {
 		Optional<StoredIngredient> opt = repository.findByName(entry.getKey());
 		StoredIngredient in = opt.orElseThrow(() -> new IllegalArgumentException("No such ingredient: " + entry.getKey()));
-		final Amount amount = in.getAmount();
-		final Long old = amount.getAmount();
+//		final Amount amount = in.getAmount();
+
+		final Long old = in.getAmount();
 		final IngredientUnitAmount subtract = converterClient.subtract(
 			ConversionRequest.builder()
 				.ingredient(Ingredient.builder()
@@ -96,13 +98,26 @@ public class IngredientService {
 				.build()
 		);
 
-		amount.setAmount(Math.round(subtract.getAmount()));
+//		amount.setAmount(Math.round(subtract.getAmount()));
+		in.setAmount(Math.round(subtract.getAmount()));
 
 		logger.info("Ingredient {} used to have {} units, now has {}",
 			in.getName(),
 			old,
-			amount.getAmount());
+			in.getAmount());
 
 		return in;
+	}
+
+	public IngredientsUpdateResult save(Collection<StoredIngredient> ingredients) {
+//		ingredients.forEach(ingredient -> {
+//			repository.save(ingredient);
+//		});
+//
+		repository.saveAll(ingredients);
+
+		return IngredientsUpdateResult.builder()
+			.successful(true)
+			.build();
 	}
 }

@@ -16,6 +16,7 @@ import se.atrosys.baking.repository.IngredientRepository;
 import se.atrosys.baking.service.IngredientService;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,9 @@ import java.util.stream.Collectors;
  * TODO write documentation
  */
 @RestController
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000"} )
+
+@CrossOrigin(origins = {"*"})
+//@CrossOrigin(origins = {"http://127.0.0.1:4200", "http://127.0.0.1:3000", "http://localhost:3000"} )
 public class IngredientResource {
 	private final IngredientRepository repository;
 	private final IngredientService service;
@@ -44,6 +47,13 @@ public class IngredientResource {
 	@GetMapping("/ingredients/{ingredient}")
 	public StoredIngredient one(@PathVariable("ingredient") String ingredient) {
 		return repository.findByName(ingredient).orElseThrow(EntityNotFoundException::new);
+	}
+
+	@PutMapping("/ing2")
+	public IngredientsUpdateResult update2(@RequestBody List<StoredIngredient> ingredients) {
+		logger.info("Updating ingredients: {}", ingredients);
+
+		return service.save(ingredients);
 	}
 
 	@PutMapping("/ingredients")

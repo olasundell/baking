@@ -37,13 +37,14 @@ public class PrePopulateConfig {
 	}
 
 	private StoredIngredient ingredient(String name, int amount, Unit unit) {
-		final Amount amount1 = Amount.builder().amount((long) amount).build();
+//		final Amount amount1 = Amount.builder().amount((long) amount).build();
 		final StoredIngredient ingredient = StoredIngredient.builder()
 				.name(name)
-				.amount(amount1)
+				.amount((long) amount)
+//				.amount(amount1)
 				.unit(unit)
 				.build();
-		amount1.setIngredient(ingredient);
+//		amount1.setIngredient(ingredient);
 		return ingredient;
 	}
 }

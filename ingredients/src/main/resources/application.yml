@@ -2,6 +2,9 @@ server:
   port: 8440
 
 spring:
+  jackson:
+    mapper:
+      INFER_CREATOR_FROM_CONSTRUCTOR_PROPERTIES: false
   application:
     name: ingredients
   jpa:
