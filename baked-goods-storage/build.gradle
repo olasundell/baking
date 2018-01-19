@@ -1,0 +1,14 @@
+apply plugin: 'org.springframework.boot'
+apply plugin: 'spring-cloud-contract'
+
+bootJar.enabled = false
+
+dependencies {
+	compile project(":common")
+	runtime group: 'com.h2database', name: 'h2'
+}
+
+contracts {
+//	 fully qualified name to a class that will be the base class for your generated test classes
+	baseClassForTests = 'se.atrosys.baking.storage.SpringCloudContractTest'
+}

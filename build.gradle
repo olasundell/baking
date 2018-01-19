@@ -9,6 +9,7 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath "org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.0.0.M5"
 //		classpath 'se.transmode.gradle:gradle-docker:1.2'
 		classpath 'org.sgornostal:gradle-docker-plugin:1.5.3'
 	}
@@ -16,6 +17,7 @@ buildscript {
 
 plugins {
 	id "com.zoltu.git-versioning" version "3.0.3"
+//	id 'com.github.ben-manes.versions' version '0.17.0'
 }
 
 subprojects {
@@ -23,6 +25,7 @@ subprojects {
 	apply plugin: 'idea'
 	apply plugin: 'org.springframework.boot'
 	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'spring-cloud-contract'
 	apply plugin: 'com.zoltu.git-versioning'
 
 	sourceCompatibility = 1.8
@@ -44,54 +47,55 @@ subprojects {
 	dependencyManagement {
 		imports {
 			mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+			mavenBom 'org.springframework.cloud:spring-cloud-contract-dependencies:2.0.0.M5'
 		}
 	}
 
-	if (!it.name.equals('common')) {
-		apply plugin: 'docker'
-
-		dependencies {
-			compile('org.springframework.cloud:spring-cloud-starter-zipkin')
-		}
-
-//		task buildDocker(unit: Docker, dependsOn: bootRepackage) {
-//			push = true
-//			applicationName = jar.baseName
-//			dockerfile = file('Dockerfile')
-//			doFirst {
-//				copy {
-//					from jar
-//					into stageDir
-//				}
+//	if (!it.name.equals('common')) {
+//		apply plugin: 'docker'
+//
+//		dependencies {
+//			compile('org.springframework.cloud:spring-cloud-starter-zipkin')
+//		}
+//
+////		task buildDocker(unit: Docker, dependsOn: bootRepackage) {
+////			push = true
+////			applicationName = jar.baseName
+////			dockerfile = file('Dockerfile')
+////			doFirst {
+////				copy {
+////					from jar
+////					into stageDir
+////				}
+////			}
+////		}
+//
+//		dockerRegistries {
+//			reg {
+//				url = '192.168.99.101:80'
+//				email = 'email@email.com'
+//				username = 'user'
+//				password = 'pwd'
+//			}
+//			man {
+//				url = '192.168.99.101:80'
+//				email = 'email@email.com'
+//				username = 'user'
+//				password = 'pwd'
 //			}
 //		}
-
-		dockerRegistries {
-			reg {
-				url = '192.168.99.101:80'
-				email = 'email@email.com'
-				username = 'user'
-				password = 'pwd'
-			}
-			man {
-				url = '192.168.99.101:80'
-				email = 'email@email.com'
-				username = 'user'
-				password = 'pwd'
-			}
-		}
-
-		docker {
-			println ZoltuGitVersioning.versionInfo
-			println jar.archivePath
-
-			dependsOn bootJar
-			imageName = jar.baseName
-			buildArgs = ['JAR_NAME': jar.archiveName ]
-			files jar.archivePath
-			host 'tcp://192.168.99.101:2376'
-		}
-	}
+//
+//		docker {
+//			println ZoltuGitVersioning.versionInfo
+//			println jar.archivePath
+//
+//			dependsOn bootJar
+//			imageName = jar.baseName
+//			buildArgs = ['JAR_NAME': jar.archiveName ]
+//			files jar.archivePath
+//			host 'tcp://192.168.99.101:2376'
+//		}
+//	}
 
 	dependencies {
 		compileOnly group: 'org.projectlombok', name: 'lombok'
@@ -102,7 +106,7 @@ subprojects {
 //		compile('org.springframework.cloud:spring-cloud-starter-hystrix')
 //		compile('org.springframework.cloud:spring-cloud-starter-hystrix-dashboard')
 		compile('org.springframework.cloud:spring-cloud-starter-netflix-ribbon')
-//		compile('org.springframework.cloud:spring-cloud-starter-sleuth')
+		compile('org.springframework.cloud:spring-cloud-starter-sleuth')
 //		compile('org.springframework.cloud:spring-cloud-starter-zookeeper-config')
 //		compile('org.springframework.cloud:spring-cloud-starter-zookeeper-discovery')
 //		compile('org.springframework.cloud:spring-cloud-starter-zuul')
@@ -111,10 +115,11 @@ subprojects {
 //		runtime('io.zipkin.java:zipkin-autoconfigure-ui')
 		testCompile('org.springframework.boot:spring-boot-starter-test')
 		testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
+		testCompile 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
 	}
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '4.3.1'
+	gradleVersion = '4.4.1'
 	distributionType = Wrapper.DistributionType.ALL
 }

@@ -1,8 +1,10 @@
 include 'baking'
 include 'common'
+include 'baked-goods-storage'
 include 'conversion'
 include 'ingredients'
 include 'recipes'
 include 'eureka-registry'
 include 'zipkin-server'
 include 'zuul'
+

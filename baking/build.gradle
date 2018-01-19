@@ -1,5 +1,5 @@
 dependencies {
-	compile(project(":common")) {
+	compile(project(':common')) {
 		exclude module: 'spring-boot-starter-data-jpa'
 	}
 }
