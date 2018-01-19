@@ -21,16 +21,16 @@ public class JacksonConfig {
 
 	@Bean
 	@Primary
-	public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
-		logger.info("Creating object mapper");
-		ObjectMapper objectMapper = builder.createXmlMapper(false)
+	public ObjectMapper objectMapper() {
+		return objectMapperBuilder().build();
+	}
+
+	@Bean
+	public Jackson2ObjectMapperBuilder objectMapperBuilder() {
+		return Jackson2ObjectMapperBuilder.json().createXmlMapper(false)
 			.modules(new Jdk8Module(), new JavaTimeModule())
-			.build();
-
-		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-		objectMapper.configure(SerializationFeature.WRITE_DATES_WITH_ZONE_ID, true);
-		objectMapper.configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, false);
-
-		return objectMapper;
+			.featuresToEnable(SerializationFeature.WRITE_DATES_WITH_ZONE_ID)
+			.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
+			;
 	}
 }
