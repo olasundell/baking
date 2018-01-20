@@ -16,7 +16,11 @@ Contract.make {
 		[
 			{
 				"id": 0,
-				"recipeId" : 1,
+				"recipe": {
+					"id":1,
+					"ingredients":{},
+					"name":"1"
+				},
 				"bakedAt" : "2018-01-18T11:16:15.588+01:00[Europe/Stockholm]"
 			}
 		]

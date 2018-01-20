@@ -13,10 +13,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.context.WebApplicationContext;
+import se.atrosys.baking.model.Recipe;
+import se.atrosys.baking.storage.client.RecipeClient;
 import se.atrosys.baking.storage.config.JacksonConfig;
 import se.atrosys.baking.storage.model.StoredGoods;
 import se.atrosys.baking.storage.repo.StorageRepo;
 import se.atrosys.baking.storage.resource.StorageResource;
+import se.atrosys.baking.storage.service.StorageService;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -54,8 +57,20 @@ public abstract class SpringCloudContractTest {
 	static class Config {
 		private final Logger logger = LoggerFactory.getLogger(this.getClass());
 		private final StorageRepo repo;
+		private final StorageService storageService;
 
 		public Config() {
+			repo = mockRepo();
+			storageService = new StorageService(repo, new RecipeClient() {
+				@Override
+				public Recipe getRecipe(Integer id) {
+					return Recipe.builder().name("" + id).id(id).build();
+				}
+			});
+		}
+
+		private StorageRepo mockRepo() {
+			StorageRepo repo;
 			logger.info("Mocking repo");
 			repo = mock(StorageRepo.class);
 
@@ -76,12 +91,13 @@ public abstract class SpringCloudContractTest {
 			});
 
 			when(repo.findAll()).thenReturn(storedGoods.values());
+			return repo;
 		}
 
 		@Bean
 		public StorageResource storageResource() {
 			logger.info("Creating new storage resource");
-			return new StorageResource(repo);
+			return new StorageResource(storageService);
 		}
 	}
 }
