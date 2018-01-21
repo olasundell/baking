@@ -23,7 +23,7 @@ import java.util.Optional;
  * TODO write documentation
  */
 @RestController
-@CrossOrigin
+@CrossOrigin("http://localhost:3000")
 public class StorageResource {
 	private final StorageService service;
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

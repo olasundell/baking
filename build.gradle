@@ -21,36 +21,35 @@ plugins {
 }
 
 subprojects {
-	if (!it.name.equals('zipkin-server')) {
-		apply plugin: 'java'
-		apply plugin: 'idea'
-		apply plugin: 'org.springframework.boot'
-		apply plugin: 'io.spring.dependency-management'
-		apply plugin: 'spring-cloud-contract'
-		apply plugin: 'com.zoltu.git-versioning'
+	apply plugin: 'java'
+	apply plugin: 'idea'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'spring-cloud-contract'
+	apply plugin: 'com.zoltu.git-versioning'
 
-		sourceCompatibility = 1.8
+	sourceCompatibility = 1.8
 
-		configurations {
-			compile.exclude module: 'commons-logging'
-		}
+	configurations {
+		compile.exclude module: 'commons-logging'
+	}
 
-		repositories {
-			mavenCentral()
-			maven { url "http://repo.spring.io/snapshot" }
-			maven { url "http://repo.spring.io/milestone" }
-		}
+	repositories {
+		mavenCentral()
+		maven { url "http://repo.spring.io/snapshot" }
+		maven { url "http://repo.spring.io/milestone" }
+	}
 
-		ext {
-			springCloudVersion = 'Finchley.M5'
-			springCloudContractVersion = '2.0.0.M5'
+	ext {
+		springCloudVersion = 'Finchley.M5'
+		springCloudContractVersion = '2.0.0.M5'
+	}
+	dependencyManagement {
+		imports {
+			mavenBom "org.springframework.cloud:spring-cloud-contract-dependencies:${springCloudContractVersion}"
+			mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 		}
-		dependencyManagement {
-			imports {
-				mavenBom "org.springframework.cloud:spring-cloud-contract-dependencies:${springCloudContractVersion}"
-				mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-			}
-		}
+	}
 
 //	if (!it.name.equals('common')) {
 //		apply plugin: 'docker'
@@ -98,26 +97,25 @@ subprojects {
 //		}
 //	}
 
-		dependencies {
-			compileOnly group: 'org.projectlombok', name: 'lombok'
-			compile('org.springframework.boot:spring-boot-starter-actuator')
+	dependencies {
+		compileOnly group: 'org.projectlombok', name: 'lombok'
+		compile('org.springframework.boot:spring-boot-starter-actuator')
 //		compile('org.springframework.cloud:spring-cloud-starter-bus-kafka')
-			compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
-			compile('org.springframework.cloud:spring-cloud-starter-openfeign')
+		compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+		compile('org.springframework.cloud:spring-cloud-starter-openfeign')
 //		compile('org.springframework.cloud:spring-cloud-starter-hystrix')
 //		compile('org.springframework.cloud:spring-cloud-starter-hystrix-dashboard')
-			compile('org.springframework.cloud:spring-cloud-starter-netflix-ribbon')
-			compile('org.springframework.cloud:spring-cloud-starter-sleuth')
+		compile('org.springframework.cloud:spring-cloud-starter-netflix-ribbon')
+		compile('org.springframework.cloud:spring-cloud-starter-sleuth')
 //		compile('org.springframework.cloud:spring-cloud-starter-zookeeper-config')
 //		compile('org.springframework.cloud:spring-cloud-starter-zookeeper-discovery')
 //		compile('org.springframework.cloud:spring-cloud-starter-zuul')
-			compile('org.springframework.boot:spring-boot-starter-web')
-			compile('org.springframework.boot:spring-boot-starter-undertow')
+		compile('org.springframework.boot:spring-boot-starter-web')
+		compile('org.springframework.boot:spring-boot-starter-undertow')
 //		runtime('io.zipkin.java:zipkin-autoconfigure-ui')
-			testCompile('org.springframework.boot:spring-boot-starter-test')
-			testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
-			testCompile 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
-		}
+		testCompile('org.springframework.boot:spring-boot-starter-test')
+		testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
+		testCompile 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
 	}
 }
 

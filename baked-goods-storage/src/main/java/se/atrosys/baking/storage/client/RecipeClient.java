@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import se.atrosys.baking.model.Recipe;
 
-@FeignClient("ingredients")
+import java.util.Optional;
+
+@FeignClient("recipes")
 public interface RecipeClient {
-	@RequestMapping(method = RequestMethod.GET, path = "/recipe/{id}")
+	@RequestMapping(method = RequestMethod.GET, path = "/recipeid/{id}")
 	Recipe getRecipe(@PathVariable("id") Integer id);
 }

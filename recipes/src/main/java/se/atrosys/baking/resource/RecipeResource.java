@@ -11,6 +11,7 @@ import se.atrosys.baking.model.Recipe;
 import se.atrosys.baking.repository.RecipeRepository;
 
 import javax.ws.rs.Path;
+import java.util.Optional;
 
 /**
  * TODO write documentation
@@ -36,5 +37,11 @@ public class RecipeResource {
 	public Recipe one(@PathVariable("recipe") String recipe) {
 		logger.debug("Finding recipe {}", recipe);
 		return repository.findByName(recipe);
+	}
+
+	@GetMapping(path = "/recipeid/{id}")
+	public Recipe one(@PathVariable("id") Integer id) {
+		logger.debug("Finding recipe by id {}", id);
+		return repository.findById(id).orElseThrow(IllegalArgumentException::new);
 	}
 }
