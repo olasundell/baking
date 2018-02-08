@@ -10,7 +10,6 @@ buildscript {
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath "org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.0.0.M5"
-//		classpath 'se.transmode.gradle:gradle-docker:1.2'
 		classpath 'org.sgornostal:gradle-docker-plugin:1.5.3'
 	}
 }
@@ -28,7 +27,7 @@ subprojects {
 	apply plugin: 'spring-cloud-contract'
 	apply plugin: 'com.zoltu.git-versioning'
 
-	sourceCompatibility = 1.8
+	sourceCompatibility = 1.9
 
 	configurations {
 		compile.exclude module: 'commons-logging'
@@ -98,7 +97,7 @@ subprojects {
 //	}
 
 	dependencies {
-		compileOnly group: 'org.projectlombok', name: 'lombok'
+		compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
 		compile('org.springframework.boot:spring-boot-starter-actuator')
 //		compile('org.springframework.cloud:spring-cloud-starter-bus-kafka')
 		compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')

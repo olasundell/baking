@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.transaction.annotation.Transactional;
 import se.atrosys.baking.client.ConversionClient;
+import se.atrosys.baking.exception.IngredientAmountException;
+import se.atrosys.baking.exception.NoSuchIngredientException;
 import se.atrosys.baking.model.Amount;
 import se.atrosys.baking.model.ConversionRequest;
 import se.atrosys.baking.model.Ingredient;
@@ -54,7 +56,8 @@ public class IngredientService {
 						.stream()
 						.map(ConstraintViolation::toString)
 						.collect(Collectors.toList());
-				logger.warn("Error in transaction, constraints are violated. Might be someone asking for more than in store.");
+				logger.warn("Error in transaction, constraints are violated. Might be someone asking for more than in store.", ex);
+				throw new IngredientAmountException(ingredientNameValue);
 			} else {
 				// TODO scream and shout
 				logger.error("Error in transaction, something truly unexpected happened: {}", e.getOriginalException().getClass().getName(), e);
@@ -83,7 +86,7 @@ public class IngredientService {
 
 	private StoredIngredient recalculateAmount(Map.Entry<String, IngredientUnitAmount> entry) {
 		Optional<StoredIngredient> opt = repository.findByName(entry.getKey());
-		StoredIngredient in = opt.orElseThrow(() -> new IllegalArgumentException("No such ingredient: " + entry.getKey()));
+		StoredIngredient in = opt.orElseThrow(() -> new NoSuchIngredientException(entry.getKey()));
 //		final Amount amount = in.getAmount();
 
 		final Long old = in.getAmount();

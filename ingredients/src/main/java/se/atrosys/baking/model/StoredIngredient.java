@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Min;
 
 /**
  * TODO write documentation
@@ -28,6 +29,7 @@ public class StoredIngredient {
 	protected Integer id;
 	protected String name;
 	protected Unit unit;
+	@Min(0)
 	protected Long amount;
 
 //	@OneToOne(mappedBy = "ingredient", fetch = FetchType.LAZY, cascade = { CascadeType.ALL, CascadeType.MERGE})

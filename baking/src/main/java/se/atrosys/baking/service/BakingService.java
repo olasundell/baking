@@ -1,9 +1,12 @@
 package se.atrosys.baking.service;
 
+import com.netflix.client.ClientException;
+import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.NestedServletException;
 import se.atrosys.baking.client.IngredientClient;
 import se.atrosys.baking.client.RecipeClient;
 import se.atrosys.baking.client.StorageClient;
@@ -37,7 +40,14 @@ public class BakingService {
 
 	public BakingResult bake(String recipe) {
 		logger.info("Baking {}", recipe);
-		Recipe r = recipeClient.getRecipe(recipe);
+		Recipe r = null;
+
+		try {
+			r = recipeClient.getRecipe(recipe);
+		} catch (RuntimeException e) {
+			logger.error("", e);
+			throw e;
+		}
 
 		if (r == null) {
 			return notFound(recipe);
@@ -87,8 +97,14 @@ public class BakingService {
 				.map(entry -> entry.getKey() + " " + entry.getValue())
 				.collect(Collectors.joining(", "));
 
+		IngredientsUpdateResult result = null;
+
 		logger.info("Getting ingredients: {}", s);
-		IngredientsUpdateResult result = ingredientClient.pickOutIngredients(r.getIngredients());
+		try {
+			result = ingredientClient.pickOutIngredients(r.getIngredients());
+		} catch (FeignException e) {
+			return false;
+		}
 		return result.isSuccessful();
 	}
 }

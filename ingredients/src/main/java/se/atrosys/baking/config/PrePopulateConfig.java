@@ -32,7 +32,7 @@ public class PrePopulateConfig {
 		return Arrays.asList(ingredient("wheat flour", 32_000, Unit.GRAMMES),
 				ingredient("sugar", 23_000, Unit.GRAMMES),
 				ingredient("baking soda", 500, Unit.GRAMMES),
-				ingredient("egg", 3, Unit.PIECES),
+				ingredient("egg", 5, Unit.PIECES),
 				ingredient("milk", 21, Unit.LITRES));
 	}
 

@@ -61,7 +61,7 @@ public abstract class SpringCloudContractTest {
 
 		public Config() {
 			repo = mockRepo();
-			storageService = new StorageService(repo, id -> Optional.of(Recipe.builder().name("" + id).id(id).build()));
+			storageService = new StorageService(repo, id -> Recipe.builder().name("" + id).id(id).build());
 		}
 
 		private StorageRepo mockRepo() {

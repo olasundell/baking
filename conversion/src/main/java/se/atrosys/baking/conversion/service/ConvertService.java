@@ -29,6 +29,8 @@ public class ConvertService {
 	}
 
 	public IngredientUnitAmount subtract(ConversionRequest request) {
+		logger.info("Subtracting {}", request.toString());
+
 		Unit origUnit = request.getIngredient().getUnit();
 		Unit subUnit = request.getToSubtract().getUnit();
 
